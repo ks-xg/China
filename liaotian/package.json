@@ -1,0 +1,13 @@
+{
+  "name": "node-ts-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^17.0.33"
+  }
+}

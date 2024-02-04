@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>聊天室-管理页面</title>
+		<script src="/vue"></script>
+	</head>
+	<body>
+		<div id="app">
+			<table border="1">
+				<tr>
+					<th>名字</th>
+					<th>密码</th>
+					<th>管理员权限</th>
+				</tr>
+				<tr v-for="(v, k) in users" :key="k">
+					<td>{{k}}</td>
+					<td><input type="text" v-model="v.password" /></td>
+					<td><input type="checkbox" v-model="v.op" /></td>
+					<td><button @click="del(k)">删除</button></td>
+				</tr>
+			</table>
+			<button @click="add">添加成员</button>
+			<button @click="finish">完成修改</button>
+			<table border="1">
+				<tr>
+					<th>编号</th>
+					<th>信息</th>
+					<th>姓名</th>
+					<th>op</th>
+				</tr>
+				<tr v-for="(i, index) in chats" :key="index">
+					<td>{{index}}</td>
+					<td>{{i.chat}}</td>
+					<td>{{i.user}}</td>
+					<td><input type="checkbox" v-model="i.op" /></td>
+					<td><button @click="delChat(index)">删除</button></td>
+				</tr>
+			</table>
+			<button @click="addOp">添加信息</button>
+		</div>
+		<script>
+			new Vue({
+				el: "#app",
+				data: {
+					users: {},
+					temp: {},
+					chats: [],
+					tempChats: []
+				},
+				mounted() {
+					(function() {
+						fetch("/getUsers?password=che-chat-admin-password-chehtqw370883").then(r => {
+							return r.json();
+						}).then(d => {
+							if (JSON.stringify(this.temp) !== JSON.stringify(d)) {
+								this.temp = JSON.parse(JSON.stringify(d));
+								this.users = JSON.parse(JSON.stringify(d));
+							}
+							arguments.callee.call(this);
+						});
+					}).call(this);
+					(function() {
+						fetch("/get").then(r => {
+							return r.json();
+						}).then(d => {
+							if (JSON.stringify(this.tempChats) !== JSON.stringify(d)) {
+								this.tempChats = JSON.parse(JSON.stringify(d));
+								this.chats = JSON.parse(JSON.stringify(d));
+							}
+							arguments.callee.call(this);
+						});
+					}).call(this);
+				},
+				methods: {
+					finish() {
+						fetch(
+							`/editUsers?password=che-chat-admin-password-chehtqw370883&msg=${JSON.stringify(this.users)}`
+						).then(r => {
+							return r.text();
+						}).then(d => {
+							if (d === "success") {
+								alert("成功");
+							} else {
+								alert("失败");
+							}
+						});
+					},
+					del(k) {
+						delete this.users[k];
+						this.users.admin.op = !this.users.admin.op;
+						this.users.admin.op = !this.users.admin.op;
+					},
+					add() {
+						try {
+							const name = window.prompt("请输入成员名称");
+							if (this.users[name] !== undefined) {
+								throw "err"
+							}
+							this.users[name] = {
+								op: false,
+								password: ""
+							}
+							this.users.admin.op = !this.users.admin.op;
+							this.users.admin.op = !this.users.admin.op;
+							alert("成功");
+						} catch {
+							alert("失败");
+						}
+					},
+					addOp() {
+						try {
+							const chat = window.prompt("请输入信息");
+							this.chats.push({
+								op: true,
+								user: "server",
+								chat
+							});
+						} catch {
+							alert("失败");
+						}
+					},
+					delChat(index) {
+						this.chats.splice(index, 1);
+					}
+				},
+				updated() {
+					if (this.chats !== "[]") {
+						fetch(
+							`/editChats?password=che-chat-admin-password-chehtqw370883&msg=${JSON.stringify(this.chats)}`
+						);
+					}
+				}
+			});
+		</script>
+	</body>
+</html>
