@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>跳转链接</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    h1 {
+      margin-bottom: 20px;
+    }
+    
+    input[type="text"] {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>输入链接</h1>
+  <input type="text" id="linkInput" placeholder="请输入链接">
+  <button onclick="jumpToLink()">跳转</button>
+  <br>
+  <font color="Red">1.禁止输入违法链接
+  <br>2.请勿输入色情链接
+  <br></font>
+  <script>
+    function jumpToLink() {
+      const link = document.getElementById("linkInput").value;
+      window.location.href = link;
+    }
+  </script>
+</body>
+</html>
