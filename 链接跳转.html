@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>跳转链接</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
+    <title>链接跳转</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
       text-align: center;
     }
-    
-    h1 {
-      margin-bottom: 20px;
-    }
-    
-    input[type="text"] {
+        .content-container {
+            /* 设置容器宽度为100%，使其自适应屏幕宽度 */
+            width: 100%;
+            /* 设置容器高度为自动，使其根据内容自适应高度 */
+            height: auto;
+            /* 隐藏边框 */
+            border: none;
+            /* 可选：添加一些内边距，使内容看起来更舒适 */
+            padding: 20px;
+            /* 可选：添加背景色，以便更容易看到容器边界 */
+            background-color: #f2f2f2;
+        }
+      #url-input {
       width: 80%;
       max-width: 400px;
       padding: 10px;
@@ -25,7 +32,7 @@
       margin-bottom: 10px;
     }
     
-    button {
+    #enter-button{
       padding: 10px 20px;
       font-size: 16px;
       background-color: #4CAF50;
@@ -33,26 +40,56 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
-    }
-    
+    }   
     button:hover {
       background-color: #45a049;
     }
-  </style>
+    </style>
 </head>
 <body>
-  <h1>输入链接</h1>
-  <input type="text" id="linkInput" placeholder="请输入链接">
-  <button onclick="jumpToLink()">跳转</button>
-  <br>
+    <div>
+    <h1>链接跳转</h1>
+        <input type="text" id="url-input" placeholder="请输入链接">
+        <button id="enter-button">确定</button>
+        <br>
   <font color="Red">1.禁止输入违法链接
   <br>2.请勿输入色情链接
-  <br></font>
-  <script>
-    function jumpToLink() {
-      const link = document.getElementById("linkInput").value;
-      window.location.href = link;
-    }
-  </script>
+  <br>3.如有以上后果自负</font>
+    </div>
+    <div id="content-container">
+        <!-- 这里将会显示加载的内容 -->
+    </div>
+
+    <script>
+        document.getElementById('enter-button').addEventListener('click', function() {
+            var url = document.getElementById('url-input').value;
+            if (url) {
+                // 创建一个新的XMLHttpRequest对象
+                var xhr = new XMLHttpRequest();
+
+                // 设置请求类型、URL等
+                xhr.open('GET', url, true);
+
+                // 设置请求完成后的回调函数
+                xhr.onload = function() {
+                    if (xhr.status === 200) { // 请求成功
+                        // 获取目标网页的内容
+                        var content = xhr.responseText;
+
+                        // 将内容插入到指定元素中
+                        document.getElementById('content-container').innerHTML = content;
+                    } else {
+                        // 处理请求失败的情况
+                        console.error('请求失败，状态码：', xhr.status);
+                        alert('请求失败，请检查URL是否正确！');
+                    }
+                };
+                // 发送请求
+                xhr.send();
+            } else {
+                alert('请输入有效的URL！');
+            }
+        });
+    </script>
 </body>
 </html>
