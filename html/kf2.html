@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+            <meta charset="utf-8">
+            <script>
+            location.href="weixin://biz/ww/kefu/https://work.weixin.qq.com/kfid/kfc58f9b22b4c69c47e?schema=1&refkey=";
+
+            function closeByJSBridge() {
+              WeixinJSBridge.invoke('closeWindow', {}, function() {});
+            }
+
+            if (window.WeixinJSBridge) closeByJSBridge();
+            else document.addEventListener('WeixinJSBridgeReady', closeByJSBridge, false);
+
+            var useClose = 0;
+            if (useClose) {
+              console.log('window.close');
+              window.close();
+            }
+
+            window.onfocus = function() {
+              setTimeout(function() {
+                console.log('history.back');
+                history.back();
+              }, 200);
+            }
+
+            </script>
